@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>MJR Music Player</title>
+<link rel="icon" type="image/png" href="assets/icon.png" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Righteous&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+<!-- Inline SVG icon system (Lucide-style, 24x24, stroke 2) -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="i-home" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></symbol>
+    <symbol id="i-queue" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></symbol>
+    <symbol id="i-heart" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></symbol>
+    <symbol id="i-play" viewBox="0 0 24 24"><polygon points="7 4 20 12 7 20 7 4" fill="currentColor"/></symbol>
+    <symbol id="i-pause" viewBox="0 0 24 24"><rect x="6" y="4" width="4" height="16" rx="1.2" fill="currentColor"/><rect x="14" y="4" width="4" height="16" rx="1.2" fill="currentColor"/></symbol>
+    <symbol id="i-next" viewBox="0 0 24 24"><polygon points="19 20 9 12 19 4 19 20" fill="currentColor"/><line x1="5" y1="19" x2="5" y2="5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></symbol>
+    <symbol id="i-prev" viewBox="0 0 24 24"><polygon points="5 4 15 12 5 20 5 4" fill="currentColor"/><line x1="19" y1="5" x2="19" y2="19" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></symbol>
+    <symbol id="i-shuffle" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 18h1.4c1.3 0 2.5-.6 3.3-1.7l6.1-8.6c.8-1.1 2-1.7 3.3-1.7H22"/><path d="m18 2 4 4-4 4"/><path d="M2 6h1.9c1.5 0 2.9.9 3.6 2.2"/><path d="M22 18h-5.9c-1.3 0-2.6-.7-3.3-1.8l-.5-.8"/><path d="m18 14 4 4-4 4"/></symbol>
+    <symbol id="i-repeat" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m17 2 4 4-4 4"/><path d="M3 11v-1a4 4 0 0 1 4-4h14"/><path d="m7 22-4-4 4-4"/><path d="M21 13v1a4 4 0 0 1-4 4H3"/></symbol>
+    <symbol id="i-repeat1" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m17 2 4 4-4 4"/><path d="M3 11v-1a4 4 0 0 1 4-4h14"/><path d="m7 22-4-4 4-4"/><path d="M21 13v1a4 4 0 0 1-4 4H3"/><path d="M11 10h1v4"/></symbol>
+    <symbol id="i-plus" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14"/><path d="M12 5v14"/></symbol>
+    <symbol id="i-folder" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z"/></symbol>
+    <symbol id="i-vol" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4.702a.705.705 0 0 0-1.203-.498L6.413 7.587A1.4 1.4 0 0 1 5.416 8H3a1 1 0 0 0-1 1v6a1 1 0 0 0 1 1h2.416a1.4 1.4 0 0 1 .997.413l3.383 3.384A.705.705 0 0 0 11 19.298z"/><path d="M16 9a5 5 0 0 1 0 6"/><path d="M19.364 18.364a9 9 0 0 0 0-12.728"/></symbol>
+    <symbol id="i-x" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></symbol>
+    <symbol id="i-minus" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14"/></symbol>
+    <symbol id="i-max" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="5" y="5" width="14" height="14" rx="2"/></symbol>
+    <symbol id="i-dots" viewBox="0 0 24 24"><circle cx="5" cy="12" r="1.6" fill="currentColor"/><circle cx="12" cy="12" r="1.6" fill="currentColor"/><circle cx="19" cy="12" r="1.6" fill="currentColor"/></symbol>
+    <symbol id="i-music" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></symbol>
+    <symbol id="i-trash" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></symbol>
+    <symbol id="i-edit" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/></symbol>
+    <symbol id="i-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></symbol>
+    <symbol id="i-clock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></symbol>
+    <symbol id="i-back" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></symbol>
+    <symbol id="i-search" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></symbol>
+    <symbol id="i-disc" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="2.5" fill="currentColor" stroke="none"/></symbol>
+    <symbol id="i-listplus" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 12H3"/><path d="M16 6H3"/><path d="M16 18H3"/><path d="M19 10v6"/><path d="M16 13h6"/></symbol>
+    <symbol id="i-github" viewBox="0 0 24 24"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12" fill="currentColor"/></symbol>
+  </defs>
+</svg>
+
+<div id="bg-glow" aria-hidden="true"></div>
+<div id="bg-blur" aria-hidden="true"></div>
+<canvas id="bg-visual" aria-hidden="true"></canvas>
+
+<!-- Custom titlebar -->
+<header id="titlebar">
+  <div id="drag-region">
+    <div class="logo">
+      <img src="assets/icon.png" alt="MJR Music Player logo" class="logo-img" />
+      <div class="logo-text">MJR <em>Music Player</em></div>
+    </div>
+    <div class="titlebar-center">
+      <div class="pill" id="now-playing-pill" role="status" aria-live="polite"><svg class="ic ic-sm" aria-hidden="true"><use href="#i-music"/></svg><span id="pill-text">Ready to play</span></div>
+    </div>
+  </div>
+  <div class="win-controls">
+    <button id="btn-min" aria-label="Minimize"><svg class="ic" aria-hidden="true"><use href="#i-minus"/></svg></button>
+    <button id="btn-max" aria-label="Maximize or restore"><svg class="ic" aria-hidden="true"><use href="#i-max"/></svg></button>
+    <button id="btn-close" class="close" aria-label="Close"><svg class="ic" aria-hidden="true"><use href="#i-x"/></svg></button>
+  </div>
+</header>
+
+<div id="layout">
+  <!-- Sidebar -->
+  <aside id="sidebar" aria-label="Library navigation">
+    <nav class="nav" aria-label="Main">
+      <button class="nav-item active" data-view="home" aria-current="page"><svg class="ic" aria-hidden="true"><use href="#i-home"/></svg><span>Home</span></button>
+      <button class="nav-item" data-view="favorites"><svg class="ic" aria-hidden="true"><use href="#i-heart"/></svg><span>Favorites</span><em class="nav-count" id="nav-fav-count" hidden></em></button>
+      <button class="nav-item" data-view="playlists"><svg class="ic" aria-hidden="true"><use href="#i-disc"/></svg><span>Playlists</span><em class="nav-count" id="nav-pl-count" hidden></em></button>
+    </nav>
+    <div class="search-box">
+      <svg class="ic" aria-hidden="true"><use href="#i-search"/></svg>
+      <label class="sr" for="search">Search songs, artists, albums</label>
+      <input id="search" type="search" placeholder="Search songs, artists..." autocomplete="off" />
+      <button id="search-clear" class="ghost-icon" aria-label="Clear search" hidden><svg class="ic ic-sm" aria-hidden="true"><use href="#i-x"/></svg></button>
+    </div>
+    <div class="side-section">
+      <div class="side-head">
+        <h3 id="lib-head">Library</h3>
+        <div class="side-actions" role="group" aria-labelledby="lib-head">
+          <button id="btn-add-files" aria-label="Add audio files"><svg class="ic ic-sm" aria-hidden="true"><use href="#i-plus"/></svg></button>
+          <button id="btn-add-folder" aria-label="Add music folder"><svg class="ic ic-sm" aria-hidden="true"><use href="#i-folder"/></svg></button>
+        </div>
+      </div>
+      <div id="stats" class="stats" role="status">0 songs</div>
+    </div>
+    <div class="side-section grow">
+      <div class="side-head">
+        <h3 id="pl-head">Playlists</h3>
+        <button id="btn-new-playlist" aria-label="Create new playlist"><svg class="ic ic-sm" aria-hidden="true"><use href="#i-plus"/></svg><span>New</span></button>
+      </div>
+      <div id="playlist-list" role="list" aria-labelledby="pl-head"></div>
+    </div>
+    <div class="side-footer">
+      <label class="toggle"><input type="checkbox" id="toggle-visual" checked /><span aria-hidden="true"></span>Visualizer</label>
+      <label class="toggle"><input type="checkbox" id="toggle-blur" checked /><span aria-hidden="true"></span>Blur BG</label>
+    </div>
+    <button id="github-link" class="github-link" aria-label="Open imrealMJR on GitHub" title="Open imrealMJR on GitHub"><svg class="ic ic-sm" aria-hidden="true"><use href="#i-github"/></svg><span class="handle">@imrealMJR</span><span class="gh-tag">GitHub</span></button>
+  </aside>
+
+  <!-- Main -->
+  <main id="main" tabindex="-1">
+    <section id="hero" aria-label="Now playing">
+      <canvas id="visual" aria-hidden="true"></canvas>
+      <div class="hero-inner">
+        <div class="vinyl-wrap" aria-hidden="true">
+          <div id="vinyl" class="vinyl paused">
+            <img id="vinyl-cover" alt="" />
+            <div class="vinyl-hole"></div>
+          </div>
+          <div class="vinyl-ring"></div>
+        </div>
+        <div class="hero-info">
+          <div class="eyebrow">Now playing</div>
+          <h1 id="hero-title">Pick your vibe</h1>
+          <p id="hero-artist">Add music to get started — drag &amp; drop files anywhere</p>
+          <div class="hero-buttons">
+            <button id="btn-hero-play" class="btn primary"><svg class="ic ic-sm" aria-hidden="true"><use href="#i-play"/></svg><span>Play</span></button>
+            <button id="btn-hero-shuffle" class="btn ghost"><svg class="ic ic-sm" aria-hidden="true"><use href="#i-shuffle"/></svg><span>Shuffle</span></button>
+            <button id="btn-hero-add" class="btn ghost"><svg class="ic ic-sm" aria-hidden="true"><use href="#i-plus"/></svg><span>Add Music</span></button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="toolbar">
+      <div class="chips" role="tablist" aria-label="Library filters">
+        <button class="chip active" data-filter="all" role="tab" aria-selected="true">All</button>
+        <button class="chip" data-filter="recent" role="tab" aria-selected="false">Recently added</button>
+        <button class="chip" data-filter="favorites" role="tab" aria-selected="false"><svg class="ic ic-sm" aria-hidden="true"><use href="#i-heart"/></svg>Favorites</button>
+      </div>
+      <div class="toolbar-right">
+        <span id="count-label" role="status"></span>
+        <button id="btn-clear" class="link">Clear library</button>
+      </div>
+    </section>
+
+    <section id="views">
+      <div id="view-home" class="view active" role="tabpanel">
+        <div id="empty" class="empty">
+          <div class="empty-art" aria-hidden="true"><svg class="ic-xl"><use href="#i-disc"/></svg></div>
+          <h2>Drop the beat</h2>
+          <p>Drag &amp; drop MP3 / WAV / FLAC / OGG / M4A anywhere,<br />or click below to browse.</p>
+          <div class="empty-actions">
+            <button class="btn primary" id="btn-empty-files">Choose files</button>
+            <button class="btn ghost" id="btn-empty-folder">Choose folder</button>
+          </div>
+        </div>
+        <div id="track-list" role="list" aria-label="Songs"></div>
+      </div>
+
+      <div id="view-playlist" class="view" role="tabpanel" aria-label="Playlist details">
+        <button id="pl-back" class="back-btn"><svg class="ic ic-sm" aria-hidden="true"><use href="#i-back"/></svg><span>Back</span></button>
+        <div class="pl-hero">
+          <div class="pl-hero-cover" id="pl-hero-cover" aria-hidden="true"></div>
+          <div class="pl-hero-info">
+            <div class="eyebrow">Playlist</div>
+            <h2 id="pl-detail-name">Playlist</h2>
+            <p id="pl-detail-meta" class="muted">0 songs</p>
+            <div class="pl-hero-actions">
+              <button id="pl-detail-play" class="btn primary"><svg class="ic ic-sm" aria-hidden="true"><use href="#i-play"/></svg><span>Play</span></button>
+              <button id="pl-detail-shuffle" class="btn ghost"><svg class="ic ic-sm" aria-hidden="true"><use href="#i-shuffle"/></svg><span>Shuffle</span></button>
+              <button id="pl-detail-add" class="btn ghost"><svg class="ic ic-sm" aria-hidden="true"><use href="#i-plus"/></svg><span>Add songs</span></button>
+              <button id="pl-detail-rename" class="btn ghost"><svg class="ic ic-sm" aria-hidden="true"><use href="#i-edit"/></svg><span>Rename</span></button>
+              <button id="pl-detail-delete" class="btn danger-ghost"><svg class="ic ic-sm" aria-hidden="true"><use href="#i-trash"/></svg><span>Delete</span></button>
+            </div>
+          </div>
+        </div>
+        <div id="playlist-detail-list" role="list" aria-label="Playlist songs"></div>
+      </div>
+
+      <div id="view-favorites" class="view" role="tabpanel" aria-label="Favorite songs">
+        <div class="view-head">
+          <h2 class="view-title">Favorites</h2>
+          <div class="head-actions">
+            <button id="btn-fav-play" class="btn primary btn-sm"><svg class="ic ic-sm" aria-hidden="true"><use href="#i-play"/></svg><span>Play all</span></button>
+            <button id="btn-fav-shuffle" class="btn ghost btn-sm"><svg class="ic ic-sm" aria-hidden="true"><use href="#i-shuffle"/></svg><span>Shuffle</span></button>
+          </div>
+        </div>
+        <div id="fav-list" role="list" aria-label="Favorite songs"></div>
+      </div>
+
+      <div id="view-playlists" class="view" role="tabpanel" aria-label="All playlists">
+        <div class="view-head">
+          <h2 class="view-title">Playlists</h2>
+          <button id="btn-grid-new" class="btn ghost btn-sm"><svg class="ic ic-sm" aria-hidden="true"><use href="#i-plus"/></svg><span>New playlist</span></button>
+        </div>
+        <div id="playlists-grid"></div>
+      </div>
+    </section>
+  </main>
+</div>
+
+<!-- Player bar -->
+<footer id="player" aria-label="Playback controls">
+  <div class="p-left">
+    <div id="p-cover" class="p-cover"><span aria-hidden="true">MJR</span><img id="p-cover-img" alt="" /></div>
+    <div class="p-meta">
+      <div id="p-title">Not playing</div>
+      <div id="p-artist">—</div>
+    </div>
+    <button id="btn-fav" class="icon-btn" aria-label="Add to favorites" aria-pressed="false"><svg class="ic" aria-hidden="true"><use href="#i-heart"/></svg></button>
+  </div>
+  <div class="p-center">
+    <div class="controls" role="group" aria-label="Transport">
+      <button id="btn-shuffle" class="icon-btn" aria-label="Shuffle" aria-pressed="false"><svg class="ic" aria-hidden="true"><use href="#i-shuffle"/></svg></button>
+      <button id="btn-prev" class="icon-btn big" aria-label="Previous track"><svg class="ic" aria-hidden="true"><use href="#i-prev"/></svg></button>
+      <button id="btn-play" class="play-btn" aria-label="Play"><svg class="ic" id="play-svg" aria-hidden="true"><use id="play-use" href="#i-play"/></svg></button>
+      <button id="btn-next" class="icon-btn big" aria-label="Next track"><svg class="ic" aria-hidden="true"><use href="#i-next"/></svg></button>
+      <button id="btn-repeat" class="icon-btn" aria-label="Repeat mode: off" aria-pressed="false"><svg class="ic" aria-hidden="true"><use id="repeat-use" href="#i-repeat"/></svg></button>
+    </div>
+    <div class="progress-row">
+      <span id="t-cur">0:00</span>
+      <div id="progress" class="progress" role="slider" tabindex="0" aria-label="Seek" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div id="progress-fill"></div><div id="progress-knob"></div></div>
+      <span id="t-end">0:00</span>
+    </div>
+  </div>
+  <div class="p-right">
+    <svg class="ic muted-ic" aria-hidden="true"><use href="#i-vol"/></svg>
+    <label class="sr" for="volume">Volume</label>
+    <input id="volume" type="range" min="0" max="100" value="85" />
+  </div>
+</footer>
+
+<!-- Drop overlay -->
+<div id="drop-overlay" aria-hidden="true"><div class="drop-card"><svg class="ic-xl"><use href="#i-music"/></svg><h2>Drop to add music</h2><p>MP3 • WAV • FLAC • OGG • M4A</p></div></div>
+
+<!-- Context menu + Add-to-playlist popup -->
+<div id="ctx-menu" class="menu" role="menu" hidden></div>
+<div id="pl-popup" class="menu" role="menu" aria-label="Add to playlist" hidden></div>
+
+<!-- Generic modal (playlist / confirm / edit-track) -->
+<div id="modal" class="hidden">
+  <div class="modal-card modal-wide" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+    <h3 id="modal-title">New playlist</h3>
+    <p id="modal-message" class="muted" hidden></p>
+    <label class="sr" for="playlist-name">Playlist name</label>
+    <input id="playlist-name" placeholder="Playlist name..." maxlength="40" autocomplete="off" />
+    <div id="modal-song-picker" hidden>
+      <label class="sr" for="song-pick-search">Search songs to add</label>
+      <input id="song-pick-search" placeholder="Search songs to add..." autocomplete="off" />
+      <div id="song-pick-count" class="muted pick-count" role="status"></div>
+      <div id="song-pick-list" role="listbox" aria-multiselectable="true" aria-label="Choose songs"></div>
+    </div>
+    <div id="modal-track-fields" hidden>
+      <div class="edit-cover-row">
+        <div id="edit-cover-preview" class="edit-cover" aria-hidden="true">M</div>
+        <div class="edit-cover-btns">
+          <button id="btn-cover-change" class="btn ghost btn-sm" type="button"><svg class="ic ic-sm" aria-hidden="true"><use href="#i-edit"/></svg><span>Change photo</span></button>
+          <button id="btn-cover-remove" class="btn danger-ghost btn-sm" type="button"><svg class="ic ic-sm" aria-hidden="true"><use href="#i-trash"/></svg><span>Remove</span></button>
+          <input id="cover-file" type="file" accept="image/*" hidden />
+        </div>
+      </div>
+      <label class="fld"><span>Title</span><input id="track-title" maxlength="120" autocomplete="off" placeholder="Song title" /></label>
+      <label class="fld"><span>Artist</span><input id="track-artist" maxlength="120" autocomplete="off" placeholder="Artist" /></label>
+      <label class="fld"><span>Album</span><input id="track-album" maxlength="120" autocomplete="off" placeholder="Album" /></label>
+      <p class="muted fine-print">Edits update how the song looks inside MJR. The audio file on disk is not modified.</p>
+    </div>
+    <div class="modal-actions">
+      <button id="modal-cancel" class="btn ghost">Cancel</button>
+      <button id="modal-save" class="btn primary">Save</button>
+    </div>
+  </div>
+</div>
+
+<div id="toast" role="status" aria-live="polite"></div>
+<audio id="audio" preload="metadata"></audio>
+<script src="renderer.js"></script>
+</body>
+</html>
